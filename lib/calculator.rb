@@ -44,9 +44,9 @@ class Calculator
     stack.pop
   end
 
-  ORD_OF_OPS = {
-    "*" => 0,
-    "/" => 0,
+  OP_PRECEDENCE = {
+    "*" => 3,
+    "/" => 3,
     "+" => 2,
     "-" => 2
   }
@@ -59,7 +59,15 @@ class Calculator
       if number
         output << number.to_f 
       elsif op
+        o1 = OP_PRECEDENCE[op]
+        o2 = OP_PRECEDENCE[op_stack.last]
+        while o1 && o2 && o1 <= o2
+          output.push op_stack.pop
+          o1 = OP_PRECEDENCE[op]
+          o2 = OP_PRECEDENCE[op_stack.last]
+        end
         op_stack.push op
+        
       elsif open_paren
         op_stack.push open_paren
       elsif close_paren
