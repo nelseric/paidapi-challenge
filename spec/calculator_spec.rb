@@ -46,5 +46,9 @@ describe Calculator do
     it "adds then subtracts" do
       expect(Calculator.result("(1+2)-(3+4)")).to eq -4
     end
+
+    it "allows nested parens" do
+      expect(Calculator.result("((1+2)/3)-(3+4)")).to eq -6
+    end
   end
 end

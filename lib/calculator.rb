@@ -1,6 +1,7 @@
 require 'pry'
 class Calculator
   def self.result expression
+    # eval expression # Test my tests
     new(expression).result
   end
 
@@ -53,13 +54,19 @@ class Calculator
   def postfix_expression
     output = []
     op_stack = []
-    # This regex captures numbers in one group, and any math operators in the other
-    @expression.scan(/([.\d]+)|([\/\+\-\*()])/) do |number, op|
-
-      output << number.to_f if number
-      if op
-
+    # This regex captures numbers in one group, and any math operators in the other, also splits out parens
+    @expression.scan(/([.\d]+)|([\/\+\-\*])|(\()|(\))/) do |number, op, open_paren, close_paren|
+      if number
+        output << number.to_f 
+      elsif op
         op_stack.push op
+      elsif open_paren
+        op_stack.push open_paren
+      elsif close_paren
+        while op_stack.last && op_stack.last != "("
+          output.push op_stack.pop
+        end
+        op_stack.pop
       end
     end
 
