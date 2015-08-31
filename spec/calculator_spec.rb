@@ -40,6 +40,11 @@ describe Calculator do
       # skip
       expect(Calculator.result("1+2-3+4")).to eq 4
     end
+  end
 
+  context "Parentheses" do
+    it "adds then subtracts" do
+      expect(Calculator.result("(1+2)-(3+4)")).to eq -4
+    end
   end
 end

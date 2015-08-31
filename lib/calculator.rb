@@ -9,7 +9,7 @@ class Calculator
   end
 
   def result
-    expr = postfix_respression
+    expr = postfix_expression
 
     # binding.pry
 
@@ -36,14 +36,21 @@ class Calculator
           a = stack.pop
           stack.push a / b
         else
-          rails "#{token} was not caught"
+          raise "unexpected token: '#{token}'"
         end
       end
     end
     stack.pop
   end
 
-  def postfix_respression
+  ORD_OF_OPS = {
+    "*" => 0,
+    "/" => 0,
+    "+" => 2,
+    "-" => 2
+  }
+
+  def postfix_expression
     output = []
     op_stack = []
     # This regex captures numbers in one group, and any math operators in the other
@@ -51,6 +58,7 @@ class Calculator
 
       output << number.to_f if number
       if op
+
         op_stack.push op
       end
     end
